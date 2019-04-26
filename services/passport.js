@@ -18,37 +18,50 @@ const facebookLogin = new FacebookStrategy(
 	},
 	async (accessToken, refreshToken, profile, done) => {
 		// console.log(profile);
-		const oldUser = await User.findOne({ facebookId: profile.id }).catch( err => { console.log(err); });
 
-		if (oldUser) {
-			return done(null, oldUser);
+		try {
+			const oldUser = await User.findOne({ facebookId: profile.id });
+
+			if (oldUser) {
+				return done(null, oldUser);
+			}
+
+		} catch(err) { 
+			console.log(err); 
 		}
-		// register user
-		const newUser = await new User({ facebookId: profile.id })
-			.save()
-			.catch(err => {	console.log(err) });
-		done(null, newUser);
-	}
-)
 
-// Setup options for JWT Strategy
-const jwtOptions = {
-	jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-	secretOrKey: keys.secretOrKey
-  };
+		// register user
+		try {
+			const newUser = await new User({ facebookId: profile.id }).save();
+			done(null, newUser);
+		} catch(err) {
+			console.log(err) 
+		}		
+	}
+);
   
 // Create JWT strategy
-const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
-	User.findById(payload.sub, (err, user) => {
-		if (err) { return done(err, false); }
+const jwtLogin = new JwtStrategy(
+	{
+		jwtFromRequest: ExtractJwt.fromHeader('Authorization'),
+		secretOrKey: keys.secretOrKey
+	}, 
+	async (payload, done) => {
+		try {
+			const user = await User.findById(payload.sub);
 
-		if (user) {
-			done(null, user);
-		} else {
-			done(null, false);
-		}
-	});
-});
+			if (user) {
+				done(null, user);
+			} else {
+				done(null, false);
+			}
+
+		} catch(err) {
+			console.log(err);
+			done(err, false);
+		};
+	}
+);
 
 passport.use(jwtLogin);
 passport.use(facebookLogin);

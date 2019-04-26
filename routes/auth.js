@@ -26,9 +26,6 @@ router.get(keys.facebookCallbackURL, passport.authenticate('facebook', { failure
 	}
 );
 
-router.get('/api/user', requireJwtAuth, (req, res) => {
-	res.send(req.user)
-})
 
 // LOGOUT
 router.get('/api/logout', (req, res) => {
