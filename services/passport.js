@@ -22,9 +22,7 @@ const facebookLogin = new FacebookStrategy(
 		try {
 			const oldUser = await User.findOne({ facebookId: profile.id });
 
-			if (oldUser) {
-				return done(null, oldUser);
-			}
+			if (oldUser) { return done(null, oldUser); }
 
 		} catch(err) { 
 			console.log(err); 
@@ -43,18 +41,15 @@ const facebookLogin = new FacebookStrategy(
 // Create JWT strategy
 const jwtLogin = new JwtStrategy(
 	{
-		jwtFromRequest: ExtractJwt.fromHeader('Authorization'),
+		jwtFromRequest: ExtractJwt.fromHeader('x-auth-token'),
 		secretOrKey: keys.secretOrKey
 	}, 
 	async (payload, done) => {
 		try {
 			const user = await User.findById(payload.sub);
 
-			if (user) {
-				done(null, user);
-			} else {
-				done(null, false);
-			}
+			if (user) { done(null, user); } 
+			else { done(null, false); }
 
 		} catch(err) {
 			console.log(err);

@@ -4,7 +4,6 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
 const keys = require('../config/keys');
-const requireJwtAuth = require('../middleware/requireJwtAuth');
 
 // FACEBOOK AUTH
 router.get('/auth/facebook', passport.authenticate('facebook', { session: false }));
@@ -15,12 +14,12 @@ tokenFromUser = (user) => {
 		subject: user.id
 	  });
 	return token;
-  }
+}
 
 router.get(keys.facebookCallbackURL, passport.authenticate('facebook', { failureRedirect: '/', session: false }),
 	(req, res) => {
 		const token = tokenFromUser(req.user);
-		res.cookie('authorization', token);
+		res.cookie('x-auth-cookie', token);
 		console.log(token);
 		res.redirect(keys.facebookRedirectURL);
 	}
@@ -29,8 +28,8 @@ router.get(keys.facebookCallbackURL, passport.authenticate('facebook', { failure
 
 // LOGOUT
 router.get('/api/logout', (req, res) => {
-	req.logout()
-	res.send(false)
+	req.logout();
+	res.send(false);
 });
 
 module.exports = router;

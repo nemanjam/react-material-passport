@@ -4,7 +4,7 @@ const router = express.Router();
 const requireJwtAuth = require('../middleware/requireJwtAuth');
 
 router.get('/api/user', requireJwtAuth, (req, res) => {
-	res.send(req.user)
+	res.send({user: req.user})
 });
 
 module.exports = router;
