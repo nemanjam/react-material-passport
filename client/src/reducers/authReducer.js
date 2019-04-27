@@ -1,20 +1,28 @@
-import { SET_USER } from "../actions/types";
+import { LOGIN_USER, LOGOUT_USER } from "../actions/types";
 
 const initialState = {
-  token: localStorage.getItem('token'),
+  token: null,
   isAuthenticated: false,
   user: {}
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case SET_USER:
+    case LOGIN_USER:
       return {
         ...state,
-        isAuthenticated: !!action.payload,
+        token: localStorage.getItem('token'),
+        isAuthenticated: true,
         user: action.payload
       };
+    case LOGOUT_USER:
+      return {
+        ...state,
+        token: null,
+        isAuthenticated: false,
+        user: null
+      };
     default:
-      return state;
+      return state;   
   }
 }

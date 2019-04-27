@@ -20,7 +20,7 @@ router.get(keys.facebookCallbackURL, passport.authenticate('facebook', { failure
 	(req, res) => {
 		const token = tokenFromUser(req.user);
 		res.cookie('x-auth-cookie', token);
-		console.log(token);
+		// console.log(token);
 		res.redirect(keys.facebookRedirectURL);
 	}
 );

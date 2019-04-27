@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
 
-import { SET_ERROR, SET_USER } from "./types";
+import { SET_ERROR, LOGIN_USER, LOGOUT_USER } from "./types";
 
 
 // Login - get user token
@@ -19,9 +19,10 @@ export const logInUser = () => async (dispatch, getState) => {
     const response = await axios.get('/api/user', { headers });
     // console.log('user: ', response.data.user);
     localStorage.setItem('token', cookieJwt);
-    
+    deleteAllCookies();//delete just that cookie
+
     dispatch({
-      type: SET_USER,
+      type: LOGIN_USER,
       payload: response.data.user
     });
 
@@ -40,9 +41,9 @@ export const logOutUser = () => async dispatch => {
 		await axios.get('/api/logout');
     localStorage.removeItem('token');
     deleteAllCookies();
-    
+
 		dispatch({
-			type: SET_USER,
+			type: LOGOUT_USER,
 			payload: false,
 		});
 	} catch(err) {
