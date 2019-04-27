@@ -30,7 +30,10 @@ const facebookLogin = new FacebookStrategy(
 
 		// register user
 		try {
-			const newUser = await new User({ facebookId: profile.id }).save();
+			const newUser = await new User({facebookId: profile.id, 
+											username: profile.username, 
+											displayName: profile.displayName,
+											profileUrl: profile.profileUrl}).save();
 			done(null, newUser);
 		} catch(err) {
 			console.log(err) 

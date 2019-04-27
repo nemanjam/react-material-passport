@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import Cookies from 'js-cookie';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { loginUser } from '../../actions/authActions';
+import { logInUser, logOutUser } from '../../actions/authActions';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -12,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+
 
 const styles = {
   root: {
@@ -28,11 +28,13 @@ const styles = {
 
 class Navbar extends Component {
   
+  onLogOut = () => {
+    this.props.logOutUser();
+	};
+
   componentDidMount() {
-    const cookieJwt = Cookies.get('x-auth-cookie');
-    // console.log('cookie: ', cookieJwt);
-    this.props.loginUser(cookieJwt);
-    console.log('state: ', this.props.auth);
+    this.props.logInUser();
+    console.log('store: ', this.props.auth);
   }
 
   render() {
@@ -48,7 +50,16 @@ class Navbar extends Component {
             <Typography variant="h6" color="inherit" className={classes.grow}>
               Mern
             </Typography>
-            <Button color="inherit" href="https://localhost:5000/auth/facebook">Login with Facebook</Button>
+            { this.props.auth.isAuthenticated ? (
+              <React.Fragment>
+                <Typography color="inherit">
+                  Welcome {this.props.auth.user.displayName}
+                </Typography>
+                <Button color="inherit" onClick={this.onLogOut} >Log out</Button>
+              </React.Fragment>
+            ) : (
+              <Button color="inherit" href="https://localhost:5000/auth/facebook">Login with Facebook</Button>
+            )}
           </Toolbar>
         </AppBar>
       </div>
@@ -66,7 +77,7 @@ const mapStateToProps = state => ({
 });
 
 export default compose(
-  connect(mapStateToProps, { loginUser }),
+  connect(mapStateToProps, { logInUser, logOutUser }),
   withStyles(styles)
 )(Navbar);
 

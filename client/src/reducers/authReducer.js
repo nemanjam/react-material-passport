@@ -1,6 +1,7 @@
-import { SET_USER, USER_LOADING } from "../actions/types";
+import { SET_USER } from "../actions/types";
 
 const initialState = {
+  token: localStorage.getItem('token'),
   isAuthenticated: false,
   user: {}
 };
@@ -10,7 +11,7 @@ export default function(state = initialState, action) {
     case SET_USER:
       return {
         ...state,
-        isAuthenticated: true,
+        isAuthenticated: !!action.payload,
         user: action.payload
       };
     default:
