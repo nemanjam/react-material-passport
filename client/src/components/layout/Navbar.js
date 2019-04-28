@@ -55,10 +55,17 @@ class Navbar extends Component {
             <Typography variant="h6" color="inherit" className={classes.grow}>
               Mern
             </Typography>
-
+            <List component="nav">
+              <ListItem component="div">
+                <ListItemText inset>
+                  <Typography color="inherit" variant="title">
+                  <Link to="/">Home</Link>
+                  </Typography>
+                </ListItemText>
+              </ListItem >
+            </List>
             { this.props.auth.isAuthenticated ? (
               <React.Fragment>
-
                 <List component="nav">
                   <ListItem component="div">
                       <ListItemText inset>

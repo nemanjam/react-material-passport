@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 
 import Navbar from './components/layout/Navbar';
+import Home from './components/layout/Home';
 import Feature from "./components/private/Feature";
 // import Register from "./components/auth/Register";
 // import Login from "./components/auth/Login";
@@ -16,10 +17,10 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div className="App">
-            <Navbar />
-            <Route exact path="/feature" component={Feature} />
-            {/* <Route path="/register" component={Register} />
-            <Route path="/login" component={Login} /> */}
+            <Navbar />            
+            <Route exact path="/" component={Home} />
+            <Route path="/feature" component={Feature} />
+            {/* <Route path="/login" component={Login} /> */}
           </div>
         </Router>
       </Provider>
