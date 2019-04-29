@@ -11,14 +11,12 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 
-const styles = {
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+
+const styles = theme => ({
   root: {
     flexGrow: 1,
   },
@@ -29,7 +27,15 @@ const styles = {
     marginLeft: -12,
     marginRight: 20,
   },
-};
+  fullHeight: {
+    ...theme.mixins.toolbar,
+    minWidth: 20
+  },
+  toolbarButtons: {
+    marginLeft: 'auto',
+  }
+});
+
 
 class Navbar extends Component {
   
@@ -38,6 +44,7 @@ class Navbar extends Component {
 	};
 
   componentDidMount() {
+    if (window.location.hash === "#_=_") window.location.hash = "";
     this.props.logInUser();
     // console.log('store: ', this.props.auth);
   }
@@ -47,35 +54,21 @@ class Navbar extends Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar>   
           <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit" className={classes.grow}>
-              Mern
-            </Typography>
-            <List component="nav">
-              <ListItem component="div">
-                <ListItemText inset>
-                  <Typography color="inherit" variant="title">
-                  <Link to="/">Home</Link>
-                  </Typography>
-                </ListItemText>
-              </ListItem >
-            </List>
-            { this.props.auth.isAuthenticated ? (
-              <React.Fragment>
-                <List component="nav">
-                  <ListItem component="div">
-                      <ListItemText inset>
-                        <Typography color="inherit" variant="title">
-                        <Link to="/feature">Feature</Link>
-                        </Typography>
-                      </ListItemText>
-                  </ListItem >
-                </List>
 
+            <Typography variant="title" color="inherit">
+              React Material Passport
+            </Typography>
+
+            <Tabs value={0} classes={{ root: classes.fullHeight }} onChange={this.handleChange}>
+              <Tab classes={{ root: classes.fullHeight }} label="Home" component={Link} to="/" />
+              <Tab classes={{ root: classes.fullHeight }} label="Feature" component={Link} to="/feature"/>
+              <Tab classes={{ root: classes.fullHeight }} label="Item Three" />
+            </Tabs>
+            <section className={classes.toolbarButtons}>
+            {this.props.auth.isAuthenticated ? (
+              <React.Fragment>
                 <Typography color="inherit">
                   Welcome {this.props.auth.user.displayName}
                 </Typography>
@@ -84,6 +77,7 @@ class Navbar extends Component {
             ) : (
               <Button color="inherit" href="https://localhost:5000/auth/facebook">Login with Facebook</Button>
             )}
+          </section>
           </Toolbar>
         </AppBar>
       </div>

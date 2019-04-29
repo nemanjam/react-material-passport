@@ -7,26 +7,43 @@ import { SET_ERROR, LOGIN_USER, LOGOUT_USER } from "./types";
 // Login - get user token
 export const logInUser = () => async (dispatch, getState) => {
  
-  try {
+  try {    
+    // register
     const cookieJwt = Cookies.get('x-auth-cookie');
-    // console.log('cookie: ', cookieJwt);
+    if(cookieJwt) {
+      const headers = {
+        'Content-Type': 'application/json',
+        'x-auth-token': cookieJwt
+      };
 
-    const headers = {
-      'Content-Type': 'application/json',
-      'x-auth-token': cookieJwt
-    };
-    // fetch user to validate cookie token
-    const response = await axios.get('/api/user', { headers });
-    // console.log('user: ', response.data.user);
-    localStorage.setItem('token', cookieJwt);
-    deleteAllCookies();//delete just that cookie
+      const response = await axios.get('/api/user', { headers });
+      localStorage.setItem('token', cookieJwt);
+      deleteAllCookies();//delete just that cookie
 
-    dispatch({
-      type: LOGIN_USER,
-      payload: response.data.user
-    });
+      dispatch({
+        type: LOGIN_USER,
+        payload: response.data.user
+      });
+      return;
+    }
+    // logged in
+    const token = localStorage.getItem('token');
+    if(token) {
+      const headers = {
+        'Content-Type': 'application/json',
+        'x-auth-token': token
+      };
 
+      const response = await axios.get('/api/user', { headers });
+      dispatch({
+        type: LOGIN_USER,
+        payload: response.data.user
+      });
+      return;
+    }
   } catch(err) {
+    localStorage.removeItem('token');
+    deleteAllCookies();
     dispatch({
       type: SET_ERROR,
       payload: err.response.data
@@ -38,10 +55,10 @@ export const logInUser = () => async (dispatch, getState) => {
 // Log user out
 export const logOutUser = () => async dispatch => {
 	try {
-		await axios.get('/api/logout');
     localStorage.removeItem('token');
     deleteAllCookies();
-
+    await axios.get('/api/logout');
+    
 		dispatch({
 			type: LOGOUT_USER,
 			payload: false,
