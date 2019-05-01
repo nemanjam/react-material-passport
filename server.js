@@ -24,9 +24,9 @@ mongoose
   .catch(err => console.log(err));
 
 // Use Routes
-// app.use('/api/auth', require('./routes/api/auth'));
 app.use('/', authRoutes);
 app.use('/', apiRoutes);
+app.use('/static', express.static(__dirname + '/client/public/static'));
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {

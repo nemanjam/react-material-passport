@@ -14,10 +14,10 @@ const facebookLogin = new FacebookStrategy(
 		clientID: keys.facebookAppID,
 		clientSecret: keys.facebookSecret,
 		callbackURL: keys.facebookCallbackURL,
-		profileFields: ['id', 'email', 'gender', 'profileUrl', 'displayName']
+		profileFields: ['id', 'email', 'gender', 'profileUrl', 'displayName', 'locale', 'name', 'timezone', 'updated_time', 'verified']
 	},
 	async (accessToken, refreshToken, profile, done) => {
-		// console.log(profile);
+		console.log(profile);
 
 		try {
 			const oldUser = await User.findOne({ facebookId: profile.id });
@@ -32,6 +32,7 @@ const facebookLogin = new FacebookStrategy(
 		try {
 			const newUser = await new User({facebookId: profile.id, 
 											username: profile.username, 
+											//facebookEmail: profile.emails[0].value, 
 											displayName: profile.displayName,
 											profileUrl: profile.profileUrl}).save();
 			done(null, newUser);

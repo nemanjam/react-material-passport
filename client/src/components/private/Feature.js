@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import { getFeature } from '../../actions/featureActions';
+import ProductCard from './ProductCard';
 
 const styles = theme => ({
   root: {
@@ -35,6 +36,7 @@ class Feature extends Component {
                 <Typography component="p">
                     Paper can be used to build surface or other elements for your application.
                 </Typography>
+                <ProductCard />
             </Paper>
             </div>
         );

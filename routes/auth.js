@@ -16,7 +16,7 @@ tokenFromUser = (user) => {
 	return token;
 }
 
-router.get(keys.facebookCallbackURL, passport.authenticate('facebook', { failureRedirect: '/', session: false }),
+router.get(keys.facebookCallbackURL, passport.authenticate('facebook', { scope: ['public_profile', 'email'], failureRedirect: '/', session: false }),
 	(req, res) => {
 		const token = tokenFromUser(req.user);
 		res.cookie('x-auth-cookie', token);
