@@ -22,14 +22,14 @@ const styles = theme => ({
   },
   grow: {
     flexGrow: 1,
+    marginLeft: 20
   },
   menuButton: {
     marginLeft: -12,
     marginRight: 20,
   },
-  fullHeight: {
-    ...theme.mixins.toolbar,
-    minWidth: 20
+  noWrap: {
+    whiteSpace: 'nowrap'
   },
   toolbarButtons: {
     marginLeft: 'auto',
@@ -56,28 +56,19 @@ class Navbar extends Component {
       <div className={classes.root}>
         <AppBar>   
           <Toolbar>
-
-            <Typography variant="title" color="inherit">
+            <Typography variant="title" noWrap color="inherit" style={{marginRight: "20px"}}>
               React Material Passport
             </Typography>
-
-            <Tabs value={0} classes={{ root: classes.fullHeight }} onChange={this.handleChange}>
-              <Tab classes={{ root: classes.fullHeight }} label="Home" component={Link} to="/" />
-              <Tab classes={{ root: classes.fullHeight }} label="Feature" component={Link} to="/feature"/>
-              <Tab classes={{ root: classes.fullHeight }} label="Item Three" />
-            </Tabs>
+            <Button color="inherit" component={Link} to="/" >Home</Button>
+            <Button color="inherit" component={Link} to="/feature" >Feature</Button>
+            <Button className={classes.noWrap} color="inherit" component={Link} to="/" >Item three</Button>
             <section className={classes.toolbarButtons}>
             {this.props.auth.isAuthenticated ? (
-              <React.Fragment>
-                <Typography color="inherit">
-                  Welcome {this.props.auth.user.displayName}
-                </Typography>
-                <Button color="inherit" onClick={this.onLogOut} >Log out</Button>
-              </React.Fragment>
+              <Button variant="outlined" className={classes.noWrap} color="inherit" onClick={this.onLogOut} >Log out {this.props.auth.user.displayName}</Button>
             ) : (
-              <Button color="inherit" href="https://localhost:5000/auth/facebook">Login with Facebook</Button>
+              <Button variant="outlined" className={classes.noWrap} color="inherit" href="https://localhost:5000/auth/facebook">Login with Facebook</Button>
             )}
-          </section>
+            </section>
           </Toolbar>
         </AppBar>
       </div>
