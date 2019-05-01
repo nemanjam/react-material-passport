@@ -26,7 +26,7 @@ mongoose
 // Use Routes
 app.use('/', authRoutes);
 app.use('/', apiRoutes);
-app.use('/static', express.static(__dirname + '/client/public/static'));
+app.use('/static', express.static(__dirname + '/static'));
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
