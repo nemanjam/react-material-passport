@@ -33,7 +33,7 @@ class Feature extends Component {
                     {this.props.message}
                 </Typography>
                 <Typography component="p">
-                Paper can be used to build surface or other elements for your application.
+                    Paper can be used to build surface or other elements for your application.
                 </Typography>
             </Paper>
             </div>

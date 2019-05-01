@@ -3,28 +3,51 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
 
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+
 import Navbar from './components/layout/Navbar';
 import Home from './components/layout/Home';
 import Feature from "./components/private/Feature";
 // import Register from "./components/auth/Register";
 // import Login from "./components/auth/Login";
 
-import "./App.css";
+import './App.css';
+
+const styles = theme => ({
+  layout: {
+    width: "auto",
+    marginLeft: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3,
+    [theme.breakpoints.up(900 + theme.spacing.unit * 3 * 2)]: {
+      width: 900,
+      marginLeft: "auto",
+      marginRight: "auto"
+    },
+    paddingTop: "64px"
+  }
+});
 
 class App extends Component {
   render() {
+    const { classes } = this.props;
     return (
       <Provider store={store}>
         <Router>
-          <div className="App">
-            <Navbar />            
-            <Route exact path="/" component={Home} />
-            <Route path="/feature" component={Feature} />
-            {/* <Route path="/login" component={Login} /> */}
-          </div>
+          <Navbar />
+          <main className={classes.layout}>
+            <Switch>            
+              <Route exact path="/" component={Home} />
+              <Route path="/feature" component={Feature} />
+            </Switch>
+          </main>
         </Router>
       </Provider>
     );
   }
 }
-export default App;
+App.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(App);
