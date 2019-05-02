@@ -34,7 +34,7 @@ class Products extends Component {
         return (
             <div>
             <Paper className={classes.root} elevation={1}>
-                <Grid container spacing={8} alignItems="flex-start" justify="space-between">
+                <Grid container spacing={8} alignItems="flex-start" justify="space-around">
                     <Grid container item xs={12} sm={4} md={3} spacing={24} justify="center">
                         <Grid item >
                             <ProductList />
