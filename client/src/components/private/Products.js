@@ -35,7 +35,7 @@ class Products extends Component {
             <div>
             <Paper className={classes.root} elevation={1}>
                 <Grid container spacing={8} alignItems="flex-start" justify="space-around">
-                    <Grid container item xs={12} sm={4} md={3} spacing={24} justify="center">
+                    <Grid container item xs={12} sm={5} md={3} spacing={24} alignItems="stretch" direction="column">
                         <Grid item >
                             <ProductList />
                         </Grid>
@@ -43,9 +43,9 @@ class Products extends Component {
                             <ProductList />
                         </Grid>
                     </Grid>
-                    <Grid container item spacing={24} xs={12} sm={8} md={9} alignItems="flex-end">
+                    <Grid container item spacing={24} xs={12} sm={7} md={9} alignItems="flex-end">
                         {_.range(10).map((item, index) => (
-                            <Grid item key={index} xs={12} sm={6} md={4} >
+                            <Grid item key={index} xs={12} sm={12} md={4} >
                                 <ProductCard />
                             </Grid>                                       
                         ))} 
