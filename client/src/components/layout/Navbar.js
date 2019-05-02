@@ -60,8 +60,8 @@ class Navbar extends Component {
               React Material Passport
             </Typography>
             <Button color="inherit" component={Link} to="/" >Home</Button>
+            <Button color="inherit" component={Link} to="/products" >Products</Button>
             <Button color="inherit" component={Link} to="/feature" >Feature</Button>
-            <Button className={classes.noWrap} color="inherit" component={Link} to="/" >Item three</Button>
             <section className={classes.toolbarButtons}>
             {this.props.auth.isAuthenticated ? (
               <Button variant="outlined" className={classes.noWrap} color="inherit" onClick={this.onLogOut} >Log out {this.props.auth.user.displayName}</Button>
