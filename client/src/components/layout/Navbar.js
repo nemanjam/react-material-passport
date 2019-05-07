@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { logInUser, logOutUser } from '../../actions/authActions';
+import { ReactComponent as FbSvg } from '../../assets/icons/facebook-original.svg';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -11,10 +12,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-
-
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 
 const styles = theme => ({
   root: {
@@ -33,6 +30,14 @@ const styles = theme => ({
   },
   toolbarButtons: {
     marginLeft: 'auto',
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+    //border: '1px solid white', 
+    width: '20px', 
+    height: '20px', 
+    //borderRadius: 4,
+    //background: 'white'
   }
 });
 
@@ -66,7 +71,9 @@ class Navbar extends Component {
             {this.props.auth.isAuthenticated ? (
               <Button variant="outlined" className={classes.noWrap} color="inherit" onClick={this.onLogOut} >Log out {this.props.auth.user.displayName}</Button>
             ) : (
-              <Button variant="outlined" className={classes.noWrap} color="inherit" href="https://localhost:5000/auth/facebook">Login with Facebook</Button>
+              <Button variant="outlined" className={classes.noWrap} color="inherit" href="https://localhost:5000/auth/facebook">Login with 
+                <FbSvg className={classes.rightIcon} />
+              </Button>
             )}
             </section>
           </Toolbar>

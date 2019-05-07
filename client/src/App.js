@@ -5,11 +5,13 @@ import store from './store';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
 
 import Navbar from './components/layout/Navbar';
 import Home from './components/layout/Home';
 import Feature from './components/private/Feature';
 import Products from './components/private/Products';
+import Product from './components/private/Product';
 
 
 import './App.css';
@@ -25,6 +27,11 @@ const styles = theme => ({
       marginRight: "auto"
     },
     paddingTop: "64px"
+  },
+  paper1: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
   }
 });
 
@@ -36,11 +43,14 @@ class App extends Component {
         <Router>
           <Navbar />
           <main className={classes.layout}>
-            <Switch>            
-              <Route exact path="/" component={Home} />
-              <Route path="/products" component={Products} />
-              <Route path="/feature" component={Feature} />
-            </Switch>
+          <Paper className={classes.paper1} elevation={1}>
+              <Switch>            
+                <Route exact path="/" component={Home} />
+                <Route path="/products" component={Products} />
+                <Route path="/product" component={Product} />
+                <Route path="/feature" component={Feature} />
+              </Switch>
+            </Paper>
           </main>
         </Router>
       </Provider>

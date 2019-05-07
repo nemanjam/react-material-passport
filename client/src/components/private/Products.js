@@ -5,8 +5,7 @@ import _ from 'lodash';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+
 import Grid from "@material-ui/core/Grid";
 
 import { getFeature } from '../../actions/featureActions';
@@ -14,11 +13,7 @@ import ProductCard from './ProductCard';
 import ProductList from './ProductList';
 
 const styles = theme => ({
-  root: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
-  },
+
 });
 
 class Products extends Component {
@@ -32,14 +27,13 @@ class Products extends Component {
         const { classes } = this.props;
 
         return (
-            <div>
-            <Paper className={classes.root} elevation={1}>
+            <div>           
                 <Grid container spacing={8} alignItems="flex-start" justify="space-around">
                     <Grid container item xs={12} sm={5} md={3} spacing={24} alignItems="stretch" direction="column">
-                        <Grid item >
+                        <Grid item>
                             <ProductList />
                         </Grid>
-                        <Grid item >
+                        <Grid item>
                             <ProductList />
                         </Grid>
                     </Grid>
@@ -51,7 +45,6 @@ class Products extends Component {
                         ))} 
                     </Grid>
                 </Grid>             
-            </Paper>
             </div>
         );
     }   
