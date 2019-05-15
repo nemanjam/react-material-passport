@@ -5,19 +5,21 @@ const https = require("https");
 const fs = require("fs");
 const passport = require("passport");
 
+const app = express();
+
 const keys = require("./config/keys");
 const authRoutes = require("./routes/auth");
 const apiRoutes = require("./routes/api");
 
-const app = express();
+// Bodyparser Middleware
+app.use(express.json());
+app.use(express.urlencoded());
 
 app.use(passport.initialize());
 require("./services/jwtStrategy");
 require("./services/facebookStrategy");
 require("./services/googleStrategy");
-
-// Bodyparser Middleware
-app.use(express.json());
+require("./services/localStrategy");
 
 // DB Config
 const dbConnection = keys.mongoURI;

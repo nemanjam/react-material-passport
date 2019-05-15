@@ -1,30 +1,34 @@
 const passport = require("passport");
-const JwtStrategy = require("passport-jwt").Strategy;
-const ExtractJwt = require("passport-jwt").ExtractJwt;
-
-const keys = require("../config/keys");
 const User = require("../models/User");
+const PassportLocalStrategy = require("passport-local").Strategy;
 
-// JWT strategy
-const jwtLogin = new JwtStrategy(
+const passportLogin = new PassportLocalStrategy(
   {
-    jwtFromRequest: ExtractJwt.fromHeader("x-auth-token"),
-    secretOrKey: keys.secretOrKey
+    usernameField: "email",
+    passwordField: "password",
+    session: false
   },
-  async (payload, done) => {
-    try {
-      const user = await User.findById(payload.sub);
-
-      if (user) {
-        done(null, user);
-      } else {
-        done(null, false);
+  (email, password, done) => {
+    User.findOne({ email: email.trim() }, (err, user) => {
+      if (err) {
+        return done(err);
       }
-    } catch (err) {
-      console.log(err);
-      done(err, false);
-    }
+      if (!user) {
+        return done(null, false);
+      }
+
+      user.comparePassword(password.trim(), (err, isMatch) => {
+        if (err) {
+          return done(err);
+        }
+
+        if (!isMatch) {
+          return done(null, false);
+        }
+        return done(null, user);
+      });
+    });
   }
 );
 
-passport.use(jwtLogin);
+passport.use(passportLogin);
