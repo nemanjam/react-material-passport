@@ -13,7 +13,7 @@ const apiRoutes = require("./routes/api");
 
 // Bodyparser Middleware
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(passport.initialize());
 require("./services/jwtStrategy");

@@ -32,7 +32,7 @@ router.get(
   (req, res) => {
     const token = tokenFromUser(req.user);
     res.cookie("x-auth-cookie", token);
-    res.redirect(keys.facebookRedirectURL);
+    res.redirect(keys.successRedirectURL);
   }
 );
 
@@ -53,7 +53,7 @@ router.get(
   (req, res) => {
     const token = tokenFromUser(req.user);
     res.cookie("x-auth-cookie", token);
-    res.redirect(keys.googleRedirectURL);
+    res.redirect(keys.successRedirectURL);
   }
 );
 
@@ -66,7 +66,6 @@ router.post("/auth/login", requireLocalAuth, (req, res) => {
 
 router.post("/auth/register", (req, res, next) => {
   const { email, password } = req.body;
-  //console.log(req.body);
   if (!email || !password) {
     return res
       .status(422)
