@@ -3,8 +3,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { logInUser, logOutUser } from "../../actions/authActions";
-import { ReactComponent as FbSvg } from "../../assets/icons/facebook-original.svg";
+import { logInUser, logOutUser } from "../../../actions/authActions";
 
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -32,7 +31,7 @@ const styles = theme => ({
     marginLeft: "auto"
   },
   rightIcon: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
     //border: '1px solid white',
     width: "20px",
     height: "20px"
@@ -60,7 +59,7 @@ class Navbar extends Component {
         <AppBar>
           <Toolbar>
             <Typography
-              variant="title"
+              variant="h6"
               noWrap
               color="inherit"
               style={{ marginRight: "20px" }}
@@ -87,25 +86,14 @@ class Navbar extends Component {
                   Log out {this.props.auth.user.displayName}
                 </Button>
               ) : (
-                <React.Fragment>
-                  <Button
-                    variant="outlined"
-                    className={classes.noWrap}
-                    color="inherit"
-                    href="https://localhost:5000/auth/facebook"
-                  >
-                    Login with
-                    <FbSvg className={classes.rightIcon} />
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    className={classes.noWrap}
-                    color="inherit"
-                    href="https://localhost:5000/auth/google"
-                  >
-                    Login with Google
-                  </Button>
-                </React.Fragment>
+                <Button
+                  className={classes.noWrap}
+                  color="inherit"
+                  component={Link}
+                  to="/login"
+                >
+                  Login
+                </Button>
               )}
             </section>
           </Toolbar>

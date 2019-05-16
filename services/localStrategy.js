@@ -8,26 +8,26 @@ const passportLogin = new PassportLocalStrategy(
     passwordField: "password",
     session: false
   },
-  (email, password, done) => {
-    User.findOne({ email: email.trim() }, (err, user) => {
-      if (err) {
-        return done(err);
-      }
+  async (email, password, done) => {
+    try {
+      const user = await User.findOne({ email: email.trim() });
       if (!user) {
         return done(null, false);
       }
 
-      user.comparePassword(password.trim(), (err, isMatch) => {
+      user.comparePassword(password, function(err, isMatch) {
         if (err) {
           return done(err);
         }
-
         if (!isMatch) {
           return done(null, false);
         }
+
         return done(null, user);
       });
-    });
+    } catch (err) {
+      return done(err);
+    }
   }
 );
 

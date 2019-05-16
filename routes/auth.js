@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
+const Joi = require("joi");
 
 const keys = require("../config/keys");
 const User = require("../models/User");
@@ -64,39 +65,49 @@ router.post("/auth/login", requireLocalAuth, (req, res) => {
   res.redirect(keys.successRedirectURL);
 });
 
-router.post("/auth/register", (req, res, next) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res
-      .status(422)
-      .send({ error: "You must provide email and password" });
-  }
+router.post("/auth/register", async (req, res, next) => {
+  const schema = Joi.object().keys({
+    email: Joi.string()
+      .trim()
+      .email()
+      .required(),
+    password: Joi.string()
+      .min(6)
+      .max(12)
+      .required()
+  });
 
-  User.findOne({ email: email }, function(err, existingUser) {
-    if (err) {
-      return next(err);
-    }
+  let form;
+  try {
+    form = await Joi.validate(req.body, schema);
+  } catch (err) {
+    return res.status(422).send(err.details[0].message);
+  }
+  const { email, password } = form;
+
+  try {
+    const existingUser = await User.findOne({ email: email });
 
     if (existingUser) {
       return res.status(422).send({ error: "Email is in use" });
     }
 
-    const user = new User({
-      provider: "email",
-      email: email,
-      password: password
-    });
-
-    user.save(function(err) {
-      if (err) {
-        return next(err);
-      }
+    try {
+      const user = await new User({
+        provider: "email",
+        email: email,
+        password: password
+      }).save();
       const token = tokenFromUser(user);
       console.log(token);
       res.cookie("x-auth-cookie", token);
       res.redirect(keys.successRedirectURL);
-    });
-  });
+    } catch (err) {
+      return next(err);
+    }
+  } catch (err) {
+    return next(err);
+  }
 });
 
 // logout
