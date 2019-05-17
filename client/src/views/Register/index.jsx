@@ -4,6 +4,8 @@ import { Link, withRouter } from "react-router-dom";
 // Externals
 import PropTypes from "prop-types";
 import { compose } from "redux";
+import { connect } from "react-redux";
+import { Field, reduxForm } from "redux-form";
 import validate from "validate.js";
 import _ from "lodash";
 
@@ -24,121 +26,50 @@ import {
   Typography
 } from "@material-ui/core";
 
+import { registerUserWithEmail } from "../../actions/authActions";
+
 // Component styles
 import styles from "./styles";
 
-// Form validation schema
-import schema from "./schema";
+const renderTextField = ({
+  input,
+  label,
+  meta: { touched, error },
+  ...custom
+}) => (
+  <TextField label={label} error={touched && error} {...input} {...custom} />
+);
 
-// Service methods
-const signUp = () => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(true);
-    }, 1500);
-  });
-};
+const renderCheckbox = ({ input, label }) => (
+  <Checkbox
+    label={label}
+    checked={input.value ? true : false}
+    onChange={input.onChange}
+  />
+);
 
 class Register extends Component {
-  state = {
-    values: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      policy: false
-    },
-    touched: {
-      firstName: false,
-      lastName: false,
-      email: false,
-      password: false,
-      policy: null
-    },
-    errors: {
-      firstName: null,
-      lastName: null,
-      email: null,
-      password: null,
-      policy: null
-    },
-    isValid: false,
-    isLoading: false,
-    submitError: null
-  };
+  handleFieldChange = () => {};
 
-  handleBack = () => {
-    const { history } = this.props;
-
-    history.goBack();
-  };
-
-  validateForm = _.debounce(() => {
-    const { values } = this.state;
-
-    const newState = { ...this.state };
-    const errors = validate(values, schema);
-
-    newState.errors = errors || {};
-    newState.isValid = errors ? false : true;
-
-    this.setState(newState);
-  }, 300);
-
-  handleFieldChange = (field, value) => {
-    const newState = { ...this.state };
-
-    newState.submitError = null;
-    newState.touched[field] = true;
-    newState.values[field] = value;
-
-    this.setState(newState, this.validateForm);
-  };
-
-  handleSignUp = async () => {
-    try {
-      const { history } = this.props;
-      const { values } = this.state;
-
-      this.setState({ isLoading: true });
-
-      await signUp({
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        password: values.password
-      });
-
-      history.push("/sign-in");
-    } catch (error) {
-      this.setState({
-        isLoading: false,
-        serviceError: error
-      });
-    }
+  onSubmit = formProps => {
+    console.log(formProps);
+    this.props.registerUserWithEmail(formProps, () => {
+      this.props.history.push("/login");
+    });
   };
 
   render() {
-    const { classes } = this.props;
-    const {
-      values,
-      touched,
-      errors,
-      isValid,
-      submitError,
-      isLoading
-    } = this.state;
-
-    const showFirstNameError =
-      touched.firstName && errors.firstName ? errors.firstName[0] : false;
-    const showLastNameError =
-      touched.lastName && errors.lastName ? errors.lastName[0] : false;
-    const showEmailError =
-      touched.email && errors.email ? errors.email[0] : false;
-    const showPasswordError =
-      touched.password && errors.password ? errors.password[0] : false;
-    const showPolicyError =
-      touched.policy && errors.policy ? errors.policy[0] : false;
+    const { classes, handleSubmit } = this.props;
+    const values = {};
+    const errors = {};
+    const isLoading = false;
+    const isValid = true;
+    const submitError = false;
+    const showFirstNameError = false;
+    const showLastNameError = false;
+    const showEmailError = false;
+    const showPasswordError = false;
+    const showPolicyError = false;
 
     return (
       <div className={classes.root}>
@@ -155,7 +86,10 @@ class Register extends Component {
                 </IconButton>
               </div>
               <div className={classes.contentBody}>
-                <form className={classes.form}>
+                <form
+                  onSubmit={handleSubmit(this.onSubmit)}
+                  className={classes.form}
+                >
                   <Typography className={classes.title} variant="h4">
                     Create new account
                   </Typography>
@@ -163,7 +97,7 @@ class Register extends Component {
                     Use your work email to create new account... it's free.
                   </Typography>
                   <div className={classes.fields}>
-                    <TextField
+                    {/* <TextField
                       className={classes.textField}
                       label="First name"
                       name="firstName"
@@ -172,6 +106,13 @@ class Register extends Component {
                       }
                       value={values.firstName}
                       variant="outlined"
+                    /> */}
+                    <Field
+                      className={classes.textField}
+                      variant="outlined"
+                      name="firstName"
+                      component={renderTextField}
+                      label="First Name"
                     />
                     {showFirstNameError && (
                       <Typography
@@ -181,14 +122,12 @@ class Register extends Component {
                         {errors.firstName[0]}
                       </Typography>
                     )}
-                    <TextField
+                    <Field
                       className={classes.textField}
-                      label="Last name"
-                      onChange={event =>
-                        this.handleFieldChange("lastName", event.target.value)
-                      }
-                      value={values.lastName}
                       variant="outlined"
+                      name="lastName"
+                      component={renderTextField}
+                      label="Last Name"
                     />
                     {showLastNameError && (
                       <Typography
@@ -198,15 +137,12 @@ class Register extends Component {
                         {errors.lastName[0]}
                       </Typography>
                     )}
-                    <TextField
+                    <Field
                       className={classes.textField}
-                      label="Email address"
-                      name="email"
-                      onChange={event =>
-                        this.handleFieldChange("email", event.target.value)
-                      }
-                      value={values.email}
                       variant="outlined"
+                      name="email"
+                      component={renderTextField}
+                      label="Email address"
                     />
                     {showEmailError && (
                       <Typography
@@ -216,15 +152,13 @@ class Register extends Component {
                         {errors.email[0]}
                       </Typography>
                     )}
-                    <TextField
+                    <Field
                       className={classes.textField}
-                      label="Password"
-                      onChange={event =>
-                        this.handleFieldChange("password", event.target.value)
-                      }
-                      type="password"
-                      value={values.password}
                       variant="outlined"
+                      name="password"
+                      component={renderTextField}
+                      label="Password"
+                      type="password"
                     />
                     {showPasswordError && (
                       <Typography
@@ -235,14 +169,11 @@ class Register extends Component {
                       </Typography>
                     )}
                     <div className={classes.policy}>
-                      <Checkbox
-                        checked={values.policy}
+                      <Field
                         className={classes.policyCheckbox}
-                        color="primary"
                         name="policy"
-                        onChange={() =>
-                          this.handleFieldChange("policy", !values.policy)
-                        }
+                        color="primary"
+                        component={renderCheckbox}
                       />
                       <Typography
                         className={classes.policyText}
@@ -279,6 +210,7 @@ class Register extends Component {
                       onClick={this.handleSignUp}
                       size="large"
                       variant="contained"
+                      type="submit"
                     >
                       Sign up now
                     </Button>
@@ -307,5 +239,10 @@ Register.propTypes = {
 
 export default compose(
   withRouter,
+  connect(
+    null,
+    registerUserWithEmail
+  ),
+  reduxForm({ form: "Login" }),
   withStyles(styles)
 )(Register);

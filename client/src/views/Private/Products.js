@@ -13,7 +13,11 @@ import ProductCard from "./ProductCard";
 import ProductList from "./ProductList";
 import Layouts from "../../layouts/index";
 
-const styles = theme => ({});
+const styles = theme => ({
+  root: {
+    marginTop: "15px"
+  }
+});
 
 class Products extends Component {
   componentDidMount() {
@@ -26,10 +30,10 @@ class Products extends Component {
 
     return (
       <Layouts>
-        <div>
+        <div className={classes.root}>
           <Grid
             container
-            spacing={8}
+            spacing={4}
             alignItems="flex-start"
             justify="space-around"
           >
@@ -39,7 +43,7 @@ class Products extends Component {
               xs={12}
               sm={5}
               md={3}
-              spacing={24}
+              spacing={2}
               alignItems="stretch"
               direction="column"
             >
@@ -53,7 +57,7 @@ class Products extends Component {
             <Grid
               container
               item
-              spacing={24}
+              spacing={2}
               xs={12}
               sm={7}
               md={9}

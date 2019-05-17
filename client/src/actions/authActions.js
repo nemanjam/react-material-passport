@@ -3,6 +3,13 @@ import Cookies from "js-cookie";
 
 import { SET_ERROR, LOGIN_USER, LOGOUT_USER } from "./types";
 
+export const registerUserWithEmail = (formData, cb) => async (
+  dispatch,
+  getState
+) => {
+  return {};
+};
+
 // Login - get user token
 export const logInUser = () => async (dispatch, getState) => {
   try {
