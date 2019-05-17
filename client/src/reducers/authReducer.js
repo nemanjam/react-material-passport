@@ -20,11 +20,7 @@ export default function(state = initialState, action) {
         user: action.payload
       };
     case LOGIN_USER_WITH_EMAIL:
-      return {
-        ...state,
-        isAuthenticated: false,
-        registerSuccess: action.payload
-      };
+      return state;
     case REGISTER_USER_WITH_EMAIL:
       return {
         ...state,

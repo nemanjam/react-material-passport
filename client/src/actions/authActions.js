@@ -37,8 +37,7 @@ export const loginUserWithEmail = (formData, cb) => async (
     const response = await axios.post("/auth/login", formData);
 
     dispatch({
-      type: LOGIN_USER_WITH_EMAIL,
-      payload: response.data.loginSuccess
+      type: LOGIN_USER_WITH_EMAIL
     });
     cb();
   } catch (err) {

@@ -62,7 +62,7 @@ router.get(
 router.post("/auth/login", requireLocalAuth, (req, res) => {
   const token = tokenFromUser(req.user);
   res.cookie("x-auth-cookie", token);
-  res.redirect(keys.successRedirectURL);
+  res.json({ token });
 });
 
 router.post("/auth/register", async (req, res, next) => {
