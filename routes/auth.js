@@ -67,14 +67,26 @@ router.post("/auth/login", requireLocalAuth, (req, res) => {
 
 router.post("/auth/register", async (req, res, next) => {
   const schema = Joi.object().keys({
+    firstName: Joi.string()
+      .trim()
+      .min(2)
+      .max(12)
+      .required(),
+    lastName: Joi.string()
+      .trim()
+      .min(2)
+      .max(12)
+      .required(),
     email: Joi.string()
       .trim()
       .email()
       .required(),
     password: Joi.string()
+      .trim()
       .min(6)
       .max(12)
-      .required()
+      .required(),
+    policy: Joi.boolean().required()
   });
 
   let form;
@@ -83,7 +95,7 @@ router.post("/auth/register", async (req, res, next) => {
   } catch (err) {
     return res.status(422).send(err.details[0].message);
   }
-  const { email, password } = form;
+  const { email, password, firstName, lastName } = form;
 
   try {
     const existingUser = await User.findOne({ email: email });
@@ -95,13 +107,12 @@ router.post("/auth/register", async (req, res, next) => {
     try {
       const user = await new User({
         provider: "email",
-        email: email,
-        password: password
+        email,
+        password,
+        firstName,
+        lastName
       }).save();
-      const token = tokenFromUser(user);
-      console.log(token);
-      res.cookie("x-auth-cookie", token);
-      res.redirect(keys.successRedirectURL);
+      res.send({ registerSuccess: true });
     } catch (err) {
       return next(err);
     }

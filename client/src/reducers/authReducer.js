@@ -1,8 +1,14 @@
-import { LOGIN_USER, LOGOUT_USER } from "../actions/types";
+import {
+  LOGIN_USER,
+  LOGOUT_USER,
+  REGISTER_USER_WITH_EMAIL,
+  LOGIN_USER_WITH_EMAIL
+} from "../actions/types";
 
 const initialState = {
   isAuthenticated: false,
-  user: {}
+  user: {},
+  registerSuccess: false
 };
 
 export default function(state = initialState, action) {
@@ -13,6 +19,18 @@ export default function(state = initialState, action) {
         isAuthenticated: true,
         user: action.payload
       };
+    case LOGIN_USER_WITH_EMAIL:
+      return {
+        ...state,
+        isAuthenticated: false,
+        registerSuccess: action.payload
+      };
+    case REGISTER_USER_WITH_EMAIL:
+      return {
+        ...state,
+        isAuthenticated: false,
+        registerSuccess: action.payload
+      };
     case LOGOUT_USER:
       return {
         ...state,
@@ -20,6 +38,6 @@ export default function(state = initialState, action) {
         user: null
       };
     default:
-      return state;   
+      return state;
   }
 }

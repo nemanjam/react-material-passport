@@ -1,13 +1,52 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-import { SET_ERROR, LOGIN_USER, LOGOUT_USER } from "./types";
+import {
+  SET_ERROR,
+  LOGIN_USER,
+  LOGOUT_USER,
+  REGISTER_USER_WITH_EMAIL,
+  LOGIN_USER_WITH_EMAIL
+} from "./types";
 
 export const registerUserWithEmail = (formData, cb) => async (
   dispatch,
   getState
 ) => {
-  return {};
+  try {
+    const response = await axios.post("/auth/login", formData);
+
+    dispatch({
+      type: REGISTER_USER_WITH_EMAIL,
+      payload: response.data.registerSuccess
+    });
+    cb();
+  } catch (err) {
+    dispatch({
+      type: SET_ERROR,
+      payload: err.response.data
+    });
+  }
+};
+
+export const loginUserWithEmail = (formData, cb) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    const response = await axios.post("/auth/login", formData);
+
+    dispatch({
+      type: LOGIN_USER_WITH_EMAIL,
+      payload: response.data.loginSuccess
+    });
+    cb();
+  } catch (err) {
+    dispatch({
+      type: SET_ERROR,
+      payload: err.response.data
+    });
+  }
 };
 
 // Login - get user token

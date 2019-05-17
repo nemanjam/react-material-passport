@@ -4,6 +4,7 @@ const path = require("path");
 const https = require("https");
 const fs = require("fs");
 const passport = require("passport");
+const flash = require("connect-flash");
 
 const app = express();
 
@@ -14,6 +15,7 @@ const apiRoutes = require("./routes/api");
 // Bodyparser Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(flash());
 
 app.use(passport.initialize());
 require("./services/jwtStrategy");

@@ -4,8 +4,8 @@ import { Link, withRouter } from "react-router-dom";
 // Externals
 import PropTypes from "prop-types";
 import { compose } from "redux";
-
-import validate from "validate.js";
+import { connect } from "react-redux";
+import { Field, reduxForm } from "redux-form";
 import _ from "lodash";
 
 // Material icons
@@ -30,98 +30,34 @@ import { Facebook as FacebookIcon, Google as GoogleIcon } from "../../icons";
 // Component styles
 import styles from "./styles";
 
-// Form validation schema
-import schema from "./schema";
+import { loginUserWithEmail } from "../../actions/authActions";
 
-// Service methods
-const signIn = () => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(true);
-    }, 1500);
-  });
-};
+const renderTextField = ({
+  input,
+  label,
+  meta: { touched, error },
+  ...custom
+}) => (
+  <TextField label={label} error={touched && error} {...input} {...custom} />
+);
 
 class Login extends Component {
-  state = {
-    values: {
-      email: "",
-      password: ""
-    },
-    touched: {
-      email: false,
-      password: false
-    },
-    errors: {
-      email: null,
-      password: null
-    },
-    isValid: false,
-    isLoading: false,
-    submitError: null
-  };
-
-  handleBack = () => {
-    const { history } = this.props;
-
-    history.goBack();
-  };
-
-  validateForm = _.debounce(() => {
-    const { values } = this.state;
-
-    const newState = { ...this.state };
-    const errors = validate(values, schema);
-
-    newState.errors = errors || {};
-    newState.isValid = errors ? false : true;
-
-    this.setState(newState);
-  }, 300);
-
-  handleFieldChange = (field, value) => {
-    const newState = { ...this.state };
-
-    newState.submitError = null;
-    newState.touched[field] = true;
-    newState.values[field] = value;
-
-    this.setState(newState, this.validateForm);
-  };
-
-  handleSignIn = async () => {
-    try {
-      const { history } = this.props;
-      const { values } = this.state;
-
-      this.setState({ isLoading: true });
-
-      await signIn(values.email, values.password);
-
-      localStorage.setItem("isAuthenticated", true);
-
-      history.push("/dashboard");
-    } catch (error) {
-      this.setState({
-        isLoading: false,
-        serviceError: error
-      });
-    }
+  onSubmit = formProps => {
+    console.log(formProps);
+    this.props.loginUserWithEmail(formProps, () => {
+      this.props.history.push("/");
+    });
   };
 
   render() {
-    const { classes } = this.props;
-    const {
-      values,
-      touched,
-      errors,
-      isValid,
-      submitError,
-      isLoading
-    } = this.state;
+    const { classes, handleSubmit } = this.props;
 
-    const showEmailError = touched.email && errors.email;
-    const showPasswordError = touched.password && errors.password;
+    const showEmailError = false;
+    const showPasswordError = false;
+    const errors = {};
+    const isLoading = false;
+    const isValid = true;
+    const submitError = false;
 
     return (
       <div className={classes.root}>
@@ -138,7 +74,10 @@ class Login extends Component {
                 </IconButton>
               </div>
               <div className={classes.contentBody}>
-                <form className={classes.form}>
+                <form
+                  onSubmit={handleSubmit(this.onSubmit)}
+                  className={classes.form}
+                >
                   <Typography className={classes.title} variant="h4">
                     Log in
                   </Typography>
@@ -168,16 +107,12 @@ class Login extends Component {
                     or login with email address
                   </Typography>
                   <div className={classes.fields}>
-                    <TextField
+                    <Field
                       className={classes.textField}
-                      label="Email address"
-                      name="email"
-                      onChange={event =>
-                        this.handleFieldChange("email", event.target.value)
-                      }
-                      type="text"
-                      value={values.email}
                       variant="outlined"
+                      name="email"
+                      component={renderTextField}
+                      label="Email address"
                     />
                     {showEmailError && (
                       <Typography
@@ -187,16 +122,13 @@ class Login extends Component {
                         {errors.email[0]}
                       </Typography>
                     )}
-                    <TextField
+                    <Field
                       className={classes.textField}
-                      label="Password"
-                      name="password"
-                      onChange={event =>
-                        this.handleFieldChange("password", event.target.value)
-                      }
-                      type="password"
-                      value={values.password}
                       variant="outlined"
+                      name="password"
+                      component={renderTextField}
+                      label="Password"
+                      type="password"
                     />
                     {showPasswordError && (
                       <Typography
@@ -222,6 +154,7 @@ class Login extends Component {
                       onClick={this.handleSignIn}
                       size="large"
                       variant="contained"
+                      type="submit"
                     >
                       Log in now
                     </Button>
@@ -250,5 +183,10 @@ Login.propTypes = {
 
 export default compose(
   withRouter,
+  connect(
+    null,
+    { loginUserWithEmail }
+  ),
+  reduxForm({ form: "Login" }),
   withStyles(styles)
 )(Login);

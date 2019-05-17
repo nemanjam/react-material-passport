@@ -52,7 +52,6 @@ class Register extends Component {
   handleFieldChange = () => {};
 
   onSubmit = formProps => {
-    console.log(formProps);
     this.props.registerUserWithEmail(formProps, () => {
       this.props.history.push("/login");
     });
@@ -97,16 +96,6 @@ class Register extends Component {
                     Use your work email to create new account... it's free.
                   </Typography>
                   <div className={classes.fields}>
-                    {/* <TextField
-                      className={classes.textField}
-                      label="First name"
-                      name="firstName"
-                      onChange={event =>
-                        this.handleFieldChange("firstName", event.target.value)
-                      }
-                      value={values.firstName}
-                      variant="outlined"
-                    /> */}
                     <Field
                       className={classes.textField}
                       variant="outlined"
@@ -241,8 +230,8 @@ export default compose(
   withRouter,
   connect(
     null,
-    registerUserWithEmail
+    { registerUserWithEmail }
   ),
-  reduxForm({ form: "Login" }),
+  reduxForm({ form: "Register" }),
   withStyles(styles)
 )(Register);

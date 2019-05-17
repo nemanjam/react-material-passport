@@ -6,7 +6,7 @@ export default theme => ({
     height: "100%"
   },
   name: {
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     color: theme.palette.common.white
   },
   bio: {
@@ -21,14 +21,14 @@ export default theme => ({
   contentHeader: {
     display: "flex",
     alignItems: "center",
-    paddingTop: theme.spacing.unit * 5,
-    paddingBototm: theme.spacing.unit * 2,
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2
+    paddingTop: theme.spacing(5),
+    paddingBototm: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2)
   },
   backButton: {},
   logoImage: {
-    marginLeft: theme.spacing.unit * 4
+    marginLeft: theme.spacing(4)
   },
   contentBody: {
     flexGrow: 1,
@@ -42,8 +42,8 @@ export default theme => ({
     paddingBottom: "125px",
     flexBasis: "700px",
     [theme.breakpoints.down("sm")]: {
-      paddingLeft: theme.spacing.unit * 2,
-      paddingRight: theme.spacing.unit * 2
+      paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2)
     }
   },
   title: {
@@ -51,34 +51,34 @@ export default theme => ({
   },
   subtitle: {
     color: theme.palette.text.secondary,
-    marginTop: theme.spacing.unit * 0.5
+    marginTop: theme.spacing(0.5)
   },
   facebookButton: {
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     width: "100%"
   },
   facebookIcon: {
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing(1)
   },
   googleButton: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
     width: "100%"
   },
   googleIcon: {
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing(1)
   },
   sugestion: {
     color: theme.palette.text.secondary,
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
     textAlign: "center"
   },
   fields: {
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   },
   textField: {
     width: "100%",
     "& + & ": {
-      marginTop: theme.spacing.unit * 2
+      marginTop: theme.spacing(2)
     }
   },
   policy: {
@@ -101,16 +101,16 @@ export default theme => ({
   },
   progress: {
     display: "block",
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
     marginLeft: "auto",
     marginRight: "auto"
   },
   signInButton: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
     width: "100%"
   },
   signUp: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
     color: theme.palette.text.secondary
   },
   signUpUrl: {
@@ -122,13 +122,13 @@ export default theme => ({
   },
   fieldError: {
     color: "red",
-    marginBottom: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(1)
   },
   submitError: {
     color: "red",
     alignText: "center",
-    marginBottom: theme.spacing.unit,
-    marginTop: theme.spacing.unit * 2
+    marginBottom: theme.spacing(1),
+    marginTop: theme.spacing(2)
   }
 });
