@@ -41,7 +41,7 @@ const renderTextField = ({
   <Fragment>
     <TextField label={label} error={touched && error} {...input} {...custom} />
     {touched && error && (
-      <Typography className={custom.errorClass} variant="body2">
+      <Typography className={custom.errorclass} variant="body2">
         {error}
       </Typography>
     )}
@@ -57,7 +57,14 @@ class Login extends Component {
   };
 
   render() {
-    const { classes, handleSubmit, pristine, invalid, submitting } = this.props;
+    const {
+      classes,
+      errors,
+      handleSubmit,
+      pristine,
+      invalid,
+      submitting
+    } = this.props;
 
     const isLoading = false;
     const isValid = true;
@@ -117,7 +124,7 @@ class Login extends Component {
                       name="email"
                       component={renderTextField}
                       label="Email address"
-                      errorClass={classes.fieldError}
+                      errorclass={classes.fieldError}
                     />
                     <Field
                       className={classes.textField}
@@ -126,12 +133,12 @@ class Login extends Component {
                       component={renderTextField}
                       label="Password"
                       type="password"
-                      errorClass={classes.fieldError}
+                      errorclass={classes.fieldError}
                     />
                   </div>
-                  {submitError && (
+                  {errors && typeof errors !== "object" && (
                     <Typography className={classes.submitError} variant="body2">
-                      {submitError}
+                      {errors.toString()}
                     </Typography>
                   )}
                   {isLoading ? (
