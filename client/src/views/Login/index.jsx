@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
 
 // Externals
@@ -38,7 +38,14 @@ const renderTextField = ({
   meta: { touched, error },
   ...custom
 }) => (
-  <TextField label={label} error={touched && error} {...input} {...custom} />
+  <Fragment>
+    <TextField label={label} error={touched && error} {...input} {...custom} />
+    {touched && error && (
+      <Typography className={custom.errorClass} variant="body2">
+        {error}
+      </Typography>
+    )}
+  </Fragment>
 );
 
 class Login extends Component {
@@ -50,11 +57,8 @@ class Login extends Component {
   };
 
   render() {
-    const { classes, handleSubmit } = this.props;
+    const { classes, handleSubmit, pristine, invalid, submitting } = this.props;
 
-    const showEmailError = false;
-    const showPasswordError = false;
-    const errors = {};
     const isLoading = false;
     const isValid = true;
     const submitError = false;
@@ -113,15 +117,8 @@ class Login extends Component {
                       name="email"
                       component={renderTextField}
                       label="Email address"
+                      errorClass={classes.fieldError}
                     />
-                    {showEmailError && (
-                      <Typography
-                        className={classes.fieldError}
-                        variant="body2"
-                      >
-                        {errors.email[0]}
-                      </Typography>
-                    )}
                     <Field
                       className={classes.textField}
                       variant="outlined"
@@ -129,15 +126,8 @@ class Login extends Component {
                       component={renderTextField}
                       label="Password"
                       type="password"
+                      errorClass={classes.fieldError}
                     />
-                    {showPasswordError && (
-                      <Typography
-                        className={classes.fieldError}
-                        variant="body2"
-                      >
-                        {errors.password[0]}
-                      </Typography>
-                    )}
                   </div>
                   {submitError && (
                     <Typography className={classes.submitError} variant="body2">
@@ -150,8 +140,7 @@ class Login extends Component {
                     <Button
                       className={classes.signInButton}
                       color="primary"
-                      disabled={!isValid}
-                      onClick={this.handleSignIn}
+                      disabled={invalid || submitting || pristine}
                       size="large"
                       variant="contained"
                       type="submit"
@@ -181,6 +170,23 @@ Login.propTypes = {
   history: PropTypes.object.isRequired
 };
 
+const validate = values => {
+  const errors = {};
+  const requiredFields = ["email", "password"];
+  requiredFields.forEach(field => {
+    if (!values[field]) {
+      errors[field] = "Field is required";
+    }
+  });
+  if (
+    values.email &&
+    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+  ) {
+    errors.email = "Invalid email address";
+  }
+  return errors;
+};
+
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors
@@ -192,6 +198,6 @@ export default compose(
     mapStateToProps,
     { loginUserWithEmail }
   ),
-  reduxForm({ form: "Login" }),
+  reduxForm({ form: "Login", validate }),
   withStyles(styles)
 )(Login);
