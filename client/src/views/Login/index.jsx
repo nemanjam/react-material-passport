@@ -43,7 +43,7 @@ const renderTextField = ({
 
 class Login extends Component {
   onSubmit = formProps => {
-    console.log(formProps);
+    // console.log(formProps);
     this.props.loginUserWithEmail(formProps, () => {
       this.props.history.push("/");
     });
@@ -87,7 +87,7 @@ class Login extends Component {
                   <Button
                     className={classes.facebookButton}
                     color="primary"
-                    onClick={this.handleSignIn}
+                    href="https://localhost:5000/auth/facebook"
                     size="large"
                     variant="contained"
                   >
@@ -96,7 +96,7 @@ class Login extends Component {
                   </Button>
                   <Button
                     className={classes.googleButton}
-                    onClick={this.handleSignIn}
+                    href="https://localhost:5000/auth/google"
                     size="large"
                     variant="contained"
                   >
@@ -181,10 +181,15 @@ Login.propTypes = {
   history: PropTypes.object.isRequired
 };
 
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
 export default compose(
   withRouter,
   connect(
-    null,
+    mapStateToProps,
     { loginUserWithEmail }
   ),
   reduxForm({ form: "Login" }),

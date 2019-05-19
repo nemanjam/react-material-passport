@@ -17,8 +17,7 @@ export const registerUserWithEmail = (formData, cb) => async (
     const response = await axios.post("/auth/login", formData);
 
     dispatch({
-      type: REGISTER_USER_WITH_EMAIL,
-      payload: response.data.registerSuccess
+      type: REGISTER_USER_WITH_EMAIL
     });
     cb();
   } catch (err) {
@@ -35,7 +34,6 @@ export const loginUserWithEmail = (formData, cb) => async (
 ) => {
   try {
     const response = await axios.post("/auth/login", formData);
-
     dispatch({
       type: LOGIN_USER_WITH_EMAIL
     });
@@ -61,7 +59,7 @@ export const logInUser = () => async (dispatch, getState) => {
 
       const response = await axios.get("/api/user", { headers });
       localStorage.setItem("token", cookieJwt);
-      deleteAllCookies(); //delete just that cookie
+      Cookies.remove("x-auth-cookie"); //delete just that cookie
 
       dispatch({
         type: LOGIN_USER,
@@ -86,7 +84,7 @@ export const logInUser = () => async (dispatch, getState) => {
     }
   } catch (err) {
     localStorage.removeItem("token");
-    deleteAllCookies();
+    Cookies.remove("x-auth-cookie");
     dispatch({
       type: SET_ERROR,
       payload: err.response.data

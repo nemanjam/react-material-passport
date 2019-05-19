@@ -7,9 +7,9 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = theme => ({
   root: {
     width: "auto",
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up(1140 + theme.spacing.unit * 3 * 2)]: {
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3),
+    [theme.breakpoints.up(1140 + theme.spacing(3 * 2))]: {
       width: 1140,
       marginLeft: "auto",
       marginRight: "auto"
@@ -18,8 +18,8 @@ const styles = theme => ({
   },
   paper: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2)
   }
 });
 

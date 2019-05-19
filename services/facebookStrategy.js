@@ -41,8 +41,8 @@ const facebookLogin = new FacebookStrategy(
         provider: "facebook",
         facebookId: profile.id,
         facebookEmail: profile.emails[0].value,
-        displayName: profile.displayName,
-        profileUrl: profile.profileUrl
+        facebookDisplayName: profile.displayName,
+        facebookProfileUrl: profile.profileUrl
       }).save();
 
       done(null, newUser);

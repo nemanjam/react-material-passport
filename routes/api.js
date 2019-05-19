@@ -5,10 +5,12 @@ const requireJwtAuth = require("../middleware/requireJwtAuth");
 
 router.get("/api/user", requireJwtAuth, (req, res) => {
   res.send({
-    user:
-      req.user.firstName ||
-      req.user.googleDisplayName ||
-      req.user.facebookDisplayName
+    user: {
+      displayName:
+        req.user.firstName ||
+        req.user.googleDisplayName ||
+        req.user.facebookDisplayName
+    }
   });
 });
 

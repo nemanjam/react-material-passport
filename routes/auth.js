@@ -105,14 +105,18 @@ router.post("/auth/register", async (req, res, next) => {
     }
 
     try {
-      const user = await new User({
+      const newUser = await new User({
         provider: "email",
         email,
         password,
         firstName,
         lastName
-      }).save();
-      res.send({ registerSuccess: true });
+      });
+
+      User.registerUser(newUser, (err, user) => {
+        if (err) throw err;
+        res.send({ registerSuccess: true });
+      });
     } catch (err) {
       return next(err);
     }

@@ -7,8 +7,7 @@ import {
 
 const initialState = {
   isAuthenticated: false,
-  user: {},
-  registerSuccess: false
+  user: {}
 };
 
 export default function(state = initialState, action) {
@@ -19,14 +18,9 @@ export default function(state = initialState, action) {
         isAuthenticated: true,
         user: action.payload
       };
+    case REGISTER_USER_WITH_EMAIL:
     case LOGIN_USER_WITH_EMAIL:
       return state;
-    case REGISTER_USER_WITH_EMAIL:
-      return {
-        ...state,
-        isAuthenticated: false,
-        registerSuccess: action.payload
-      };
     case LOGOUT_USER:
       return {
         ...state,

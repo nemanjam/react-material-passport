@@ -22,14 +22,14 @@ const styles = theme => ({
     maxWidth: "100%"
   },
   paper: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   },
   icon: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
     fontSize: 32
   },
   button: {
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing(1)
   }
 });
 

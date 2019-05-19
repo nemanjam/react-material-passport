@@ -42,7 +42,7 @@ const userSchema = new Schema({
   facebookDisplayName: String,
   facebookProfileUrl: String
 });
-
+/*
 userSchema.pre("save", function(next) {
   const user = this;
   bcrypt.genSalt(10, function(err, salt) {
@@ -58,7 +58,19 @@ userSchema.pre("save", function(next) {
     });
   });
 });
-
+*/
+userSchema.methods.registerUser = (newUser, callback) => {
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(newUser.password, salt, (errh, hash) => {
+      if (err) {
+        console.log(err);
+      }
+      // set pasword to hash
+      newUser.password = hash;
+      newUser.save(callback);
+    });
+  });
+};
 userSchema.methods.comparePassword = function(candidatePassword, callback) {
   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
     if (err) return callback(err);
