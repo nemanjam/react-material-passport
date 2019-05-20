@@ -33,7 +33,7 @@ class Products extends Component {
         <div className={classes.root}>
           <Grid
             container
-            spacing={4}
+            spacing={2}
             alignItems="flex-start"
             justify="space-around"
           >

@@ -12,6 +12,11 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
+import IconButton from "@material-ui/core/IconButton";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+
 const styles = theme => ({
   root: {
     flexGrow: 1
@@ -41,6 +46,18 @@ const styles = theme => ({
 });
 
 class Navbar extends Component {
+  state = {
+    anchorEl: null
+  };
+
+  handleMenu = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
   onLogOut = () => {
     this.props.logOutUser();
   };
@@ -53,6 +70,7 @@ class Navbar extends Component {
 
   render() {
     const { classes } = this.props;
+    const { auth, anchorEl } = this.state;
 
     return (
       <div className={classes.root}>
@@ -64,7 +82,7 @@ class Navbar extends Component {
               color="inherit"
               style={{ marginRight: "20px" }}
             >
-              React Material Passport
+              Mern
             </Typography>
             <Button color="inherit" component={Link} to="/">
               Home
@@ -76,7 +94,7 @@ class Navbar extends Component {
               Feature
             </Button>
             <section className={classes.toolbarButtons}>
-              {this.props.auth.isAuthenticated ? (
+              {/* {this.props.auth.isAuthenticated ? (
                 <Button
                   variant="outlined"
                   className={classes.noWrap}
@@ -85,6 +103,44 @@ class Navbar extends Component {
                 >
                   Log out {this.props.auth.user.displayName}
                 </Button>
+              ) : (
+                <Button
+                  className={classes.noWrap}
+                  color="inherit"
+                  component={Link}
+                  to="/login"
+                >
+                  Login
+                </Button>
+              )} */}
+              {this.props.auth.isAuthenticated ? (
+                <div>
+                  <IconButton
+                    aria-owns={Boolean(anchorEl) ? "menu-appbar" : undefined}
+                    aria-haspopup="true"
+                    onClick={this.handleMenu}
+                    color="inherit"
+                  >
+                    <AccountCircle />
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right"
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right"
+                    }}
+                    open={Boolean(anchorEl)}
+                    onClose={this.handleClose}
+                  >
+                    <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                    <MenuItem onClick={this.onLogOut}>Log out</MenuItem>
+                  </Menu>
+                </div>
               ) : (
                 <Button
                   className={classes.noWrap}
