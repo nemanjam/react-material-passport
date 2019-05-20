@@ -9,7 +9,7 @@ import {
   LOGIN_USER_WITH_EMAIL
 } from "./types";
 
-export const registerUserWithEmail = (formData, cb) => async (
+export const registerUserWithEmail = (formData, cb, cbErr) => async (
   dispatch,
   getState
 ) => {
@@ -25,10 +25,11 @@ export const registerUserWithEmail = (formData, cb) => async (
       type: SET_ERROR,
       payload: err.response.data
     });
+    cbErr();
   }
 };
 
-export const loginUserWithEmail = (formData, cb) => async (
+export const loginUserWithEmail = (formData, cb, cbErr) => async (
   dispatch,
   getState
 ) => {
@@ -43,6 +44,7 @@ export const loginUserWithEmail = (formData, cb) => async (
       type: SET_ERROR,
       payload: err.response.data
     });
+    cbErr();
   }
 };
 

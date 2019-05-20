@@ -49,11 +49,20 @@ const renderTextField = ({
 );
 
 class Login extends Component {
+  state = { isLoading: false };
+
   onSubmit = formProps => {
-    // console.log(formProps);
-    this.props.loginUserWithEmail(formProps, () => {
-      this.props.history.push("/");
-    });
+    console.log(this);
+    this.setState({ isLoading: true });
+    this.props.loginUserWithEmail(
+      formProps,
+      () => {
+        this.props.history.push("/");
+      },
+      () => {
+        this.setState({ isLoading: false });
+      }
+    );
   };
 
   render() {
@@ -66,9 +75,7 @@ class Login extends Component {
       submitting
     } = this.props;
 
-    const isLoading = false;
-    const isValid = true;
-    const submitError = false;
+    const { isLoading } = this.state;
 
     return (
       <div className={classes.root}>
@@ -86,7 +93,7 @@ class Login extends Component {
               </div>
               <div className={classes.contentBody}>
                 <form
-                  onSubmit={handleSubmit(this.onSubmit)}
+                  onSubmit={handleSubmit(this.onSubmit.bind(this))}
                   className={classes.form}
                 >
                   <Typography className={classes.title} variant="h4">

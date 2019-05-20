@@ -1,12 +1,11 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
 
 // Externals
 import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-import validate from "validate.js";
+import { Field, reduxForm, formValueSelector, getFormMeta } from "redux-form";
 import _ from "lodash";
 
 // Material icons
@@ -37,7 +36,19 @@ const renderTextField = ({
   meta: { touched, error },
   ...custom
 }) => (
-  <TextField label={label} error={touched && error} {...input} {...custom} />
+  <Fragment>
+    <TextField
+      label={label}
+      error={touched && !!error}
+      {...input}
+      {...custom}
+    />
+    {touched && error && (
+      <Typography className={custom.errorclass} variant="body2">
+        {error}
+      </Typography>
+    )}
+  </Fragment>
 );
 
 const renderCheckbox = ({ input, label }) => (
@@ -49,25 +60,35 @@ const renderCheckbox = ({ input, label }) => (
 );
 
 class Register extends Component {
-  handleFieldChange = () => {};
+  state = { isLoading: false };
 
   onSubmit = formProps => {
-    this.props.registerUserWithEmail(formProps, () => {
-      this.props.history.push("/login");
-    });
+    this.setState({ isLoading: true });
+    this.props.registerUserWithEmail(
+      formProps,
+      () => {
+        this.props.history.push("/login");
+      },
+      () => {
+        this.setState({ isLoading: false });
+      }
+    );
   };
 
   render() {
-    const { classes, handleSubmit } = this.props;
-    const values = {};
-    const errors = {};
-    const isLoading = false;
-    const isValid = true;
-    const submitError = false;
-    const showFirstNameError = false;
-    const showLastNameError = false;
-    const showEmailError = false;
-    const showPasswordError = false;
+    const {
+      classes,
+      errors,
+      handleSubmit,
+      pristine,
+      invalid,
+      submitting,
+      form,
+      policy,
+      meta
+    } = this.props;
+
+    const { isLoading } = this.state;
     const showPolicyError = false;
 
     return (
@@ -86,7 +107,7 @@ class Register extends Component {
               </div>
               <div className={classes.contentBody}>
                 <form
-                  onSubmit={handleSubmit(this.onSubmit)}
+                  onSubmit={handleSubmit(this.onSubmit.bind(this))}
                   className={classes.form}
                 >
                   <Typography className={classes.title} variant="h4">
@@ -102,45 +123,24 @@ class Register extends Component {
                       name="firstName"
                       component={renderTextField}
                       label="First Name"
+                      errorclass={classes.fieldError}
                     />
-                    {showFirstNameError && (
-                      <Typography
-                        className={classes.fieldError}
-                        variant="body2"
-                      >
-                        {errors.firstName[0]}
-                      </Typography>
-                    )}
                     <Field
                       className={classes.textField}
                       variant="outlined"
                       name="lastName"
                       component={renderTextField}
                       label="Last Name"
+                      errorclass={classes.fieldError}
                     />
-                    {showLastNameError && (
-                      <Typography
-                        className={classes.fieldError}
-                        variant="body2"
-                      >
-                        {errors.lastName[0]}
-                      </Typography>
-                    )}
                     <Field
                       className={classes.textField}
                       variant="outlined"
                       name="email"
                       component={renderTextField}
                       label="Email address"
+                      errorclass={classes.fieldError}
                     />
-                    {showEmailError && (
-                      <Typography
-                        className={classes.fieldError}
-                        variant="body2"
-                      >
-                        {errors.email[0]}
-                      </Typography>
-                    )}
                     <Field
                       className={classes.textField}
                       variant="outlined"
@@ -148,15 +148,8 @@ class Register extends Component {
                       component={renderTextField}
                       label="Password"
                       type="password"
+                      errorclass={classes.fieldError}
                     />
-                    {showPasswordError && (
-                      <Typography
-                        className={classes.fieldError}
-                        variant="body2"
-                      >
-                        {errors.password[0]}
-                      </Typography>
-                    )}
                     <div className={classes.policy}>
                       <Field
                         className={classes.policyCheckbox}
@@ -175,18 +168,18 @@ class Register extends Component {
                         .
                       </Typography>
                     </div>
-                    {showPolicyError && (
+                    {meta["policy"] && meta["policy"]["touched"] && !policy && (
                       <Typography
                         className={classes.fieldError}
                         variant="body2"
                       >
-                        {errors.policy[0]}
+                        {"You must agree to the policy"}
                       </Typography>
                     )}
                   </div>
-                  {submitError && (
+                  {errors && typeof errors !== "object" && (
                     <Typography className={classes.submitError} variant="body2">
-                      {submitError}
+                      {errors.toString()}
                     </Typography>
                   )}
                   {isLoading ? (
@@ -195,8 +188,7 @@ class Register extends Component {
                     <Button
                       className={classes.signUpButton}
                       color="primary"
-                      disabled={!isValid}
-                      onClick={this.handleSignUp}
+                      disabled={invalid || submitting || pristine}
                       size="large"
                       variant="contained"
                       type="submit"
@@ -226,12 +218,38 @@ Register.propTypes = {
   history: PropTypes.object.isRequired
 };
 
+const selector = formValueSelector("Register");
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors,
+  policy: selector(state, "policy"),
+  meta: getFormMeta("Register")(state)
+});
+
+const validate = values => {
+  const errors = {};
+  const requiredFields = ["firstName", "lastName", "email", "password"];
+  requiredFields.forEach(field => {
+    if (!values[field]) {
+      errors[field] = "Field is required";
+    }
+  });
+  if (
+    values.email &&
+    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+  ) {
+    errors.email = "Invalid email address";
+  }
+  return errors;
+};
+
 export default compose(
   withRouter,
   connect(
-    null,
+    mapStateToProps,
     { registerUserWithEmail }
   ),
-  reduxForm({ form: "Register" }),
+  reduxForm({ form: "Register", validate, touchOnChange: true }),
   withStyles(styles)
 )(Register);

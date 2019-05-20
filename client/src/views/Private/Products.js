@@ -41,7 +41,7 @@ class Products extends Component {
               container
               item
               xs={12}
-              sm={5}
+              sm={4}
               md={3}
               spacing={2}
               alignItems="stretch"
@@ -59,12 +59,12 @@ class Products extends Component {
               item
               spacing={2}
               xs={12}
-              sm={7}
+              sm={8}
               md={9}
               alignItems="flex-end"
             >
               {_.range(10).map((item, index) => (
-                <Grid item key={index} xs={12} sm={12} md={4}>
+                <Grid item key={index} xs={12} sm={6} md={4}>
                   <ProductCard />
                 </Grid>
               ))}
