@@ -7,7 +7,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 
-import { getFeature } from "../../actions/privateActions";
+import { getProfile } from "../../actions/privateActions";
 import Layout from "../../layout/Layout";
 
 const styles = theme => ({
@@ -19,26 +19,26 @@ const styles = theme => ({
   }
 });
 
-class Feature extends Component {
+class Profile extends Component {
   componentDidMount() {
-    this.props.getFeature();
-    // console.log(this.props);
+    this.props.getProfile();
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, profile } = this.props;
 
     return (
       <Layout>
         <div>
           <Paper className={classes.root} elevation={1}>
             <Typography variant="h5" component="h3">
-              {this.props.message}
+              Profile
             </Typography>
+            <Typography component="p">Provider: {profile.provider}</Typography>
             <Typography component="p">
-              Paper can be used to build surface or other elements for your
-              application.
+              Display name: {profile.displayName}
             </Typography>
+            <Typography component="p">Email: {profile.email}</Typography>
           </Paper>
         </div>
       </Layout>
@@ -46,19 +46,19 @@ class Feature extends Component {
   }
 }
 
-Feature.propTypes = {
+Profile.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  message: state.private.message,
+  profile: state.private.profile,
   errors: state.errors
 });
 
 export default compose(
   connect(
     mapStateToProps,
-    { getFeature }
+    { getProfile }
   ),
   withStyles(styles)
-)(Feature);
+)(Profile);

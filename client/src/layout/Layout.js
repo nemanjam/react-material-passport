@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Navbar } from "./components";
+import Navbar from "./components/Navbar";
 
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -23,7 +23,7 @@ const styles = theme => ({
   }
 });
 
-function Layouts(props) {
+const Layout = props => {
   const { classes } = props;
   return (
     <Fragment>
@@ -31,10 +31,10 @@ function Layouts(props) {
       <div className={classes.root}>{props.children}</div>
     </Fragment>
   );
-}
+};
 
-Layouts.propTypes = {
+Layout.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Layouts);
+export default withStyles(styles)(Layout);

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { withStyles } from "@material-ui/core/styles";
 
-import Layouts from "../../layouts/index";
+import Layout from "../layout/Layout";
 
 const styles = theme => ({});
 
@@ -13,13 +13,13 @@ class Home extends Component {
     const { isAuthenticated, user } = this.props.auth;
 
     return (
-      <Layouts>
+      <Layout>
         {!isAuthenticated ? (
           <h1>Welcome! Log in or register!</h1>
         ) : (
           <h1>Welcome {user.displayName}!</h1>
         )}
-      </Layouts>
+      </Layout>
     );
   }
 }

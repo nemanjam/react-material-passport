@@ -3,11 +3,11 @@ import { reducer as formReducer } from "redux-form";
 
 import authReducer from "./authReducer";
 import errorReducer from "./errorReducer";
-import featureReducer from "./featureReducer";
+import privateReducer from "./privateReducer";
 
 export default combineReducers({
   form: formReducer,
   auth: authReducer,
-  feature: featureReducer,
+  private: privateReducer,
   errors: errorReducer
 });

@@ -3,7 +3,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { logInUser, logOutUser } from "../../../actions/authActions";
+import { logInUser, logOutUser } from "../../actions/authActions";
 
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -69,8 +69,8 @@ class Navbar extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const { auth, anchorEl } = this.state;
+    const { classes, auth } = this.props;
+    const { anchorEl } = this.state;
 
     return (
       <div className={classes.root}>
@@ -87,33 +87,13 @@ class Navbar extends Component {
             <Button color="inherit" component={Link} to="/">
               Home
             </Button>
-            <Button color="inherit" component={Link} to="/products">
-              Products
-            </Button>
-            <Button color="inherit" component={Link} to="/feature">
-              Feature
-            </Button>
+            {auth.isAuthenticated && (
+              <Button color="inherit" component={Link} to="/feature">
+                Feature
+              </Button>
+            )}
             <section className={classes.toolbarButtons}>
-              {/* {this.props.auth.isAuthenticated ? (
-                <Button
-                  variant="outlined"
-                  className={classes.noWrap}
-                  color="inherit"
-                  onClick={this.onLogOut}
-                >
-                  Log out {this.props.auth.user.displayName}
-                </Button>
-              ) : (
-                <Button
-                  className={classes.noWrap}
-                  color="inherit"
-                  component={Link}
-                  to="/login"
-                >
-                  Login
-                </Button>
-              )} */}
-              {this.props.auth.isAuthenticated ? (
+              {auth.isAuthenticated ? (
                 <div>
                   <IconButton
                     aria-owns={Boolean(anchorEl) ? "menu-appbar" : undefined}
@@ -137,7 +117,12 @@ class Navbar extends Component {
                     open={Boolean(anchorEl)}
                     onClose={this.handleClose}
                   >
-                    <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                    <MenuItem component={Link} to="/profile">
+                      <IconButton color="inherit">
+                        <AccountCircle />
+                      </IconButton>
+                      <p>Profile</p>
+                    </MenuItem>
                     <MenuItem onClick={this.onLogOut}>Log out</MenuItem>
                   </Menu>
                 </div>

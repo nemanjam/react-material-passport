@@ -6,9 +6,8 @@ import store from "./store";
 import "./App.css";
 import Login from "./views/Login";
 import Register from "./views/Register";
-import Products from "./views/Private/Products";
-import Product from "./views/Private/Product";
 import Home from "./views/Home";
+import Profile from "./views/Private/Profile";
 import Feature from "./views/Private/Feature";
 
 class App extends Component {
@@ -20,8 +19,7 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
-            <Route path="/products" component={Products} />
-            <Route path="/product" component={Product} />
+            <Route path="/profile" component={Profile} />
             <Route path="/feature" component={Feature} />
           </Switch>
         </Router>

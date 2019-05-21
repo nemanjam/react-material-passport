@@ -21,7 +21,6 @@ const jwtLogin = new JwtStrategy(
         done(null, false);
       }
     } catch (err) {
-      console.log(err);
       done(err, false);
     }
   }
