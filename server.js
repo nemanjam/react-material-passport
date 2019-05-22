@@ -43,18 +43,19 @@ if (process.env.NODE_ENV === "production") {
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
+
+  const port = process.env.PORT || 80;
+  app.listen(port, () => console.log(`Server started on port ${port}`));
+} else {
+  const port = process.env.PORT || 5000;
+
+  const httpsOptions = {
+    key: fs.readFileSync("./security/cert.key"),
+    cert: fs.readFileSync("./security/cert.pem")
+  };
+
+  const server = https.createServer(httpsOptions, app).listen(port, () => {
+    console.log("https server running at " + port);
+  });
 }
-
-const port = process.env.PORT || 5000;
-
-// app.listen(port, () => console.log(`Server started on port ${port}`));
-const httpsOptions = {
-  key: fs.readFileSync("./security/cert.key"),
-  cert: fs.readFileSync("./security/cert.pem")
-};
-
-const server = https.createServer(httpsOptions, app).listen(port, () => {
-  console.log("https server running at " + port);
-});
-
 // openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout cert.key -out cert.pem -config req.cnf -sha256
