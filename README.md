@@ -6,6 +6,67 @@
 - Express with Mongoose
 - Passport with Local, JWT, Facebook and Google strategies
 
+## Installation
+
+Install backend dependencies with:
+
+```
+npm install
+```
+
+Install client dependencies with:
+
+```
+cd client
+npm install
+```
+
+In the `/config` folder you need to create `dev.js` config file with the following:
+
+```javascript
+module.exports = {
+  mongoURI: "mongodb://localhost:27017/react-material-passport-path-to-db",
+  googleClientID: "your google client id",
+  googleClientSecret: "your google secret",
+  googleCallbackURL: "/auth/google/callback",
+  facebookAppID: "your facebook app id",
+  facebookSecret: "your facebook secret",
+  facebookCallbackURL: "/auth/facebook/callback",
+  secretOrKey: "secret string for jwt",
+  successRedirectURL: "https://localhost:3000"
+};
+```
+
+Create certificates with:
+
+```
+cd security
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout cert.key -out cert.pem -config req.cnf -sha256
+```
+
+Then run the nodemon server with:
+
+```
+npm run server
+```
+
+The server will be available on `https://localhost:5000`
+
+Run the client with:
+
+```
+cd client
+npm run start
+```
+
+The client will be available on `https://localhost:3000`
+
+or run the both with:
+
+```
+npm run dev
+```
+
 ## Backend
 
 For Facebook OAuth to work it requires https on local server so we make use of built in https server with:
@@ -54,22 +115,6 @@ DNS.3 = localhost
 ```
 
 Now we can specify `https://localhost:5000/auth/facebook/callback` for callback url in Facebook app settings.
-
-In the `/config` folder you need to create `dev.js` config file with the following:
-
-```javascript
-module.exports = {
-  mongoURI: "mongodb://localhost:27017/react-material-passport-path-to-db",
-  googleClientID: "your google client id",
-  googleClientSecret: "your google secret",
-  googleCallbackURL: "/auth/google/callback",
-  facebookAppID: "your facebook app id",
-  facebookSecret: "your facebook secret",
-  facebookCallbackURL: "/auth/facebook/callback",
-  secretOrKey: "secret string for jwt",
-  successRedirectURL: "https://localhost:3000"
-};
-```
 
 We also mount two static folders, one `/static` for the images and other assets needed by React, the other one `/client/build` is used in the production is for serving React's assets and for the all other routes we return `/client/build/index.html` and let the React do the routing.
 
