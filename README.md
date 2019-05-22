@@ -2,7 +2,7 @@
 
 ## Features
 
-- React with JWT authorization with Redux Thunk and Material UI
+- React with JWT authentication with Redux Thunk and Material UI
 - Express with Mongoose
 - Passport with Local, JWT, Facebook and Google strategies
 
