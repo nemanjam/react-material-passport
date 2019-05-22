@@ -14,6 +14,7 @@ import Button from "@material-ui/core/Button";
 
 import IconButton from "@material-ui/core/IconButton";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import ExitToApp from "@material-ui/icons/ExitToApp";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 
@@ -123,7 +124,12 @@ class Navbar extends Component {
                       </IconButton>
                       <p>Profile</p>
                     </MenuItem>
-                    <MenuItem onClick={this.onLogOut}>Log out</MenuItem>
+                    <MenuItem onClick={this.onLogOut}>
+                      <IconButton color="inherit">
+                        <ExitToApp />
+                      </IconButton>
+                      <p>Log out</p>
+                    </MenuItem>
                   </Menu>
                 </div>
               ) : (
