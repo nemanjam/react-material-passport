@@ -14,7 +14,7 @@ export const registerUserWithEmail = (formData, cb, cbErr) => async (
   getState
 ) => {
   try {
-    const response = await axios.post("/auth/login", formData);
+    const response = await axios.post("/auth/register", formData);
 
     dispatch({
       type: REGISTER_USER_WITH_EMAIL

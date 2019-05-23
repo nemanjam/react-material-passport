@@ -113,7 +113,7 @@ router.post("/auth/register", async (req, res, next) => {
         lastName
       });
 
-      User.registerUser(newUser, (err, user) => {
+      newUser.registerUser(newUser, (err, user) => {
         if (err) throw err;
         res.send({ registerSuccess: true });
       });

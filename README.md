@@ -193,7 +193,7 @@ We make use of two auth middlewares, `requireLocalAuth` which is called when use
 
 ## Frontend
 
-### Loging in
+### Logging in
 
 First we assume that user just log on and has cookie so we parse the token from cookie and call `const response = await axios.get("/api/user", { headers });`. If that succeeds token is valid and we set the token in the local storage and delete the cookie.
 
