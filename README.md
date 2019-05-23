@@ -144,7 +144,7 @@ app.listen(port, () => console.log(`Server started on port ${port}`));
 
 ### Passport configuration
 
-In the `/services` folder we have all the Passport strategies, only the local strategy does flashing the error messages. It does it without session, we don't use session because we use JWT token in the `x-auth-token` to auth API calls. For the flashing messages to work we make custom callback in `middleware/requireLocalAuth.js`:
+In the `/services` folder we have all the Passport strategies, only the local strategy does flashing the error messages. It does it without session, we don't use session because we use JWT token in the `x-auth-token` header to auth API calls. For the flashing messages to work we make custom callback in `middleware/requireLocalAuth.js`:
 
 ```javascript
 const requireLocalAuth = function(req, res, next) {
