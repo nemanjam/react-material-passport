@@ -6,6 +6,10 @@
 - Express with Mongoose
 - Passport with Local, JWT, Facebook and Google strategies
 
+## Screenshots
+
+![Screenshot1](/screenshots/Screenshot_1.png)
+
 ## Installation
 
 Install backend dependencies with:
