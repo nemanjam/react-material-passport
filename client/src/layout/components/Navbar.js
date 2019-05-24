@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 import { logInUser, logOutUser } from "../../actions/authActions";
 
@@ -60,7 +60,9 @@ class Navbar extends Component {
   };
 
   onLogOut = () => {
-    this.props.logOutUser();
+    this.props.logOutUser(() => {
+      this.props.history.push("/");
+    });
   };
 
   componentDidMount() {
@@ -160,6 +162,7 @@ const mapStateToProps = state => ({
 });
 
 export default compose(
+  withRouter,
   connect(
     mapStateToProps,
     { logInUser, logOutUser }

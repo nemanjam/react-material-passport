@@ -95,7 +95,7 @@ export const logInUser = () => async (dispatch, getState) => {
 };
 
 // Log user out
-export const logOutUser = () => async dispatch => {
+export const logOutUser = cb => async dispatch => {
   try {
     localStorage.removeItem("token");
     deleteAllCookies();
@@ -105,11 +105,13 @@ export const logOutUser = () => async dispatch => {
       type: LOGOUT_USER,
       payload: false
     });
+    cb();
   } catch (err) {
     dispatch({
       type: SET_ERROR,
       payload: err.response.data
     });
+    cb();
   }
 };
 

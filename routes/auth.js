@@ -46,7 +46,7 @@ router.get(
 );
 
 router.get(
-  keys.googleCallbackURL,
+  "/auth/facebook/callback",
   passport.authenticate("google", {
     failureRedirect: "/",
     session: false

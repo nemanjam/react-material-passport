@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 
 import { getProfile } from "../../actions/privateActions";
 import Layout from "../../layout/Layout";
+import requireAuth from "../../components/requireAuth";
 
 const styles = theme => ({
   root: {
@@ -56,6 +57,7 @@ const mapStateToProps = state => ({
 });
 
 export default compose(
+  requireAuth,
   connect(
     mapStateToProps,
     { getProfile }
